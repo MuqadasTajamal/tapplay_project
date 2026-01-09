@@ -22,12 +22,10 @@ class PodcastHeader extends StatelessWidget {
     final s = MediaQuery.of(context).size;
 
     return Container(
-      height: s.height * 0.5,
+      height: 300,
+      //  * 0.5,
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(imagePath),
-          fit: BoxFit.contain,
-        ),
+        image: DecorationImage(image: AssetImage(imagePath), fit: BoxFit.cover),
         borderRadius: BorderRadius.circular(40),
       ),
       child: Stack(

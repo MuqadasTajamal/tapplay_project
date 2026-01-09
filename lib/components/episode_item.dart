@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tapplay_project/view/podcast/single_screen.dart';
 
 class EpisodeItem extends StatelessWidget {
   final String imageUrl;
@@ -25,14 +26,22 @@ class EpisodeItem extends StatelessWidget {
       padding: const EdgeInsets.all(7),
       child: Row(
         children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              image: DecorationImage(
-                image: NetworkImage(imageUrl),
-                fit: BoxFit.cover,
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SingleScreen()),
+              );
+            },
+            child: Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  image: AssetImage(imageUrl),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),

@@ -630,7 +630,7 @@ class CustomShareSheet extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CircleAvatar(
-                        radius: 26,
+                        radius: 25,
                         backgroundImage: AssetImage(contact['image']!),
                       ),
                       const SizedBox(height: 6),
@@ -657,7 +657,7 @@ class CustomShareSheet extends StatelessWidget {
 
             // 🔹 APPS (FIXED HEIGHT)
             SizedBox(
-              height: 90, // ✅ icon + label
+              height: 80, // ✅ icon + label
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: apps.length,
@@ -694,7 +694,7 @@ class CustomShareSheet extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
 
             // 🔹 ACTIONS (NO OVERFLOW)
             Column(

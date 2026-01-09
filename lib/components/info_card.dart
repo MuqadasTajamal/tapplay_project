@@ -21,7 +21,7 @@ class InfoCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(6),
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(borderRadius),
@@ -36,7 +36,7 @@ class InfoCard extends StatelessWidget {
                 style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
-            const Icon(Icons.arrow_forward_ios, color: Colors.white),
+            const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 15),
           ],
         ),
       ),

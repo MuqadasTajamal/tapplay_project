@@ -10,6 +10,7 @@ class Portcast extends StatefulWidget {
 }
 
 class _PortcastState extends State<Portcast> {
+  bool isActive = false;
   @override
   Widget build(BuildContext context) {
     var s = MediaQuery.of(context).size;
@@ -123,11 +124,24 @@ class _PortcastState extends State<Portcast> {
               Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SvgPicture.asset(
-                    "assets/icons/shuffle.svg",
-                    color: Colors.white,
-                    height: 24,
-                    width: 24,
+                  // SvgPicture.asset(
+                  //   "assets/icons/shuffle.svg",
+                  //   color: Colors.white,
+                  //   height: 24,
+                  //   width: 24,
+                  // ),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        isActive = !isActive;
+                      });
+                    },
+                    child: SvgPicture.asset(
+                      "assets/icons/shuffle.svg",
+                      color: isActive ? Colors.green : Colors.white,
+                      height: 24,
+                      width: 24,
+                    ),
                   ),
                   SizedBox(width: 70),
 
@@ -187,7 +201,7 @@ class _PortcastState extends State<Portcast> {
             ],
           ),
         ),
-        // child: Padding(
+        // child: Padding(r
         //   padding: const EdgeInsets.only(top: 30, left: 19, right: 19),
         //   child: SingleChildScrollView(
         //     child: Column(
@@ -203,7 +217,6 @@ class _PortcastState extends State<Portcast> {
         //             ),
         //             borderRadius: BorderRadius.circular(40),
         //           ),
-
         //           child: Stack(
         //             children: [
         //               Padding(
@@ -238,7 +251,6 @@ class _PortcastState extends State<Portcast> {
         //           height: 24,
         //         ),
         //         const SizedBox(height: 15),
-
         //         ElevatedButton(
         //           onPressed: () {},
         //           style: ElevatedButton.styleFrom(

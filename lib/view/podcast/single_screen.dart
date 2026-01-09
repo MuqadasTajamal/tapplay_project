@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:tapplay_project/components/custom_action_bottom_screen.dart';
+import 'package:tapplay_project/components/custom_alart_box.dart';
+import 'package:tapplay_project/components/custom_playlist_bottom_sheet.dart';
+import 'package:tapplay_project/components/custom_queue_bottom_sheet.dart';
 import 'package:tapplay_project/components/custom_share_sheet.dart';
+import 'package:tapplay_project/view/podcast/profile_screen.dart';
 
 class SingleScreen extends StatefulWidget {
   const SingleScreen({super.key});
@@ -13,7 +18,7 @@ class SingleScreen extends StatefulWidget {
 class _SingleScreenState extends State<SingleScreen> {
   int? selectedEpisodeIndex;
   bool isPlaying = false;
-
+  bool isActive = false;
   @override
   Widget build(BuildContext context) {
     var s = MediaQuery.of(context).size;
@@ -27,16 +32,6 @@ class _SingleScreenState extends State<SingleScreen> {
         'image': 'assets/images/s.png',
       },
     );
-
-    // final chapters = List.generate(
-    //   10,
-    //   (index) => {
-    //     'title': 'Chapter ${index + 1}: Cold Open',
-    //     'subtitle':
-    //         'The hosts jump straight into the mic with no script, setting the tone with raw energy, jokes, and that first spark of chaos.',
-    //     'image': 'assets/images/s.png',
-    //   },
-    // );
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -62,18 +57,24 @@ class _SingleScreenState extends State<SingleScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: s.height * 0.5,
+                    height: 300,
+                    // height: s.height * 0.5,
                     decoration: BoxDecoration(
                       image: const DecorationImage(
                         image: AssetImage("assets/images/r.png"),
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter,
                       ),
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Stack(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: EdgeInsets.only(
+                            top: 30,
+                            left: 19,
+                            right: 19,
+                          ),
                           child: Column(
                             children: [
                               Padding(
@@ -155,6 +156,7 @@ class _SingleScreenState extends State<SingleScreen> {
                       ],
                     ),
                   ),
+
                   const SizedBox(height: 15),
 
                   /// ================= CONTROL ROW =================
@@ -173,18 +175,183 @@ class _SingleScreenState extends State<SingleScreen> {
                         },
                         child: SvgPicture.asset(
                           "assets/icons/Group.svg",
-                          width: 24,
+                          width: 20,
                         ),
                         // Text("Share", style: TextStyle(color: Colors.white)),
                       ),
 
-                      const SizedBox(width: 15),
-                      SvgPicture.asset("assets/icons/gala_add.svg", width: 24),
-                      const SizedBox(width: 15),
-                      SvgPicture.asset("assets/icons/d.svg", width: 24),
-                      const Spacer(),
-                      SvgPicture.asset("assets/icons/shuffle.svg", width: 24),
-                      const SizedBox(width: 20),
+                      const SizedBox(width: 10),
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (_) => CustomPlaylistBottomSheet(),
+                          );
+                        },
+                        child: SvgPicture.asset(
+                          "assets/icons/gala_add.svg",
+                          color: Colors.white,
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
+
+                      const SizedBox(width: 10),
+
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => CustomAlertBox(
+                              title: "Download File",
+                              subtitle:
+                                  "Keep the track on your device for offline listering",
+                              onConfirm: () {
+                                // Put your download code here
+                                Navigator.of(
+                                  context,
+                                ).pop(); // Close the alert after confirming
+                              },
+                              onCancel: () {
+                                Navigator.of(
+                                  context,
+                                ).pop(); // Just close the alert
+                              },
+                            ),
+                          );
+                        },
+                        child: SvgPicture.asset(
+                          "assets/icons/d.svg",
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
+
+                      // const SizedBox(width: 10),
+                      Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.more_vert, color: Colors.white),
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context, // 👈 yahin call hota hai
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            builder: (_) => CustomActionBottomSheet(
+                              image: "assets/images/r.png",
+                              title: 'Episode 1: "The Kickoff Chaos"',
+                              subtitle: "WTF with Marc Maron",
+                              tiles: [
+                                InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      backgroundColor: Colors.transparent,
+                                      isScrollControlled: true,
+                                      builder: (context) {
+                                        return const CustomShareSheet();
+                                      },
+                                    );
+                                  },
+                                  child: ListTile(
+                                    leading: const Icon(
+                                      Icons.share,
+                                      color: Colors.white,
+                                    ),
+                                    title: const Text(
+                                      "Share this chapter",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+
+                                InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (_) =>
+                                          CustomPlaylistBottomSheet(),
+                                    );
+                                  },
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.add_circle_outline,
+                                      color: Colors.white,
+                                    ),
+                                    title: Text(
+                                      "Add to playlist",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+
+                                InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      backgroundColor: Colors.transparent,
+                                      isScrollControlled: true,
+                                      builder: (_) => CustomQueueBottomSheet(),
+                                    );
+                                  },
+                                  child: ListTile(
+                                    leading: SvgPicture.asset(
+                                      "assets/icons/Vector.svg",
+                                      width: 15,
+                                      height: 15,
+                                    ),
+                                    title: const Text(
+                                      "Add to Queue",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+
+                                // const Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfileScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: ListTile(
+                                    leading: const Icon(
+                                      Icons.play_arrow,
+                                      color: Colors.white,
+                                    ),
+                                    title: const Text(
+                                      "Go to Episode",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 10),
+
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            isActive = !isActive;
+                          });
+                        },
+                        child: SvgPicture.asset(
+                          "assets/icons/shuffle.svg",
+                          color: isActive ? Colors.green : Colors.white,
+                          height: 24,
+                          width: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
 
                       /// ▶ / ⏸ PLAY PAUSE
                       InkWell(
@@ -209,10 +376,16 @@ class _SingleScreenState extends State<SingleScreen> {
                           size: 32,
                         ),
                       ),
+                      const SizedBox(width: 10),
                     ],
                   ),
+                  const SizedBox(height: 15),
 
-                  const SizedBox(height: 25),
+                  Text(
+                    "Every great story starts with a little disorder and this premiere episode throws you right into the storm. From the awkward silences that turn into big laughs, to bold opinions that spark unexpected debates, “The Kickoff Chaos” sets the stage for what this podcast is all about: honest, unfiltered, and unpredictable conversations. We dive into the messiness of starting fresh whether it’s first gigs, early struggles, or behind-the-scenes moments no one ever talks about. Expect laughter, heated takes, and plenty of “did that really just happen?” moments. It’s the perfect chaotic kickoff to a season that promises to never play it safe.",
+                    style: TextStyle(color: Colors.white60),
+                  ),
+                  const SizedBox(height: 15),
 
                   /// ================= CHAPTER LIST =================
                   const Text(
@@ -228,453 +401,85 @@ class _SingleScreenState extends State<SingleScreen> {
 
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    // physics: const NeverScrollableScrollPhysics(),
                     itemCount: chapters.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: Image.asset(
-                          chapters[index]['image']!,
-                          width: 55,
-                        ),
-                        title: Text(
-                          chapters[index]['title']!,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        subtitle: Text(
-                          chapters[index]['subtitle']!,
-                          style: const TextStyle(color: Colors.grey),
-                        ),
+                      return Column(
+                        children: [
+                          ListTile(
+                            leading: Image.asset(
+                              chapters[index]['image']!,
+                              height: 55,
+                              // width: 55,
+                            ),
+                            title: Text(
+                              chapters[index]['title']!,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            subtitle: Text(
+                              chapters[index]['subtitle']!,
+                              style: const TextStyle(color: Colors.grey),
+                            ),
 
-                        /// 🔹 MORE ICON → SHOW MINI PLAYER
-                        ///
-                        trailing: InkWell(
-                          onTap: () {
-                            setState(() {
-                              selectedEpisodeIndex = index;
-                              isPlaying = true;
-                            });
-                            showModalBottomSheet(
-                              context: context,
-                              backgroundColor: const Color(0xff1C2431),
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(24),
-                                ),
+                            trailing: IconButton(
+                              icon: const Icon(
+                                Icons.more_vert,
+                                color: Colors.white,
                               ),
-                              builder: (context) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      // 🔹 Top handle
-                                      Center(
-                                        child: Container(
-                                          width: 40,
-                                          height: 4,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey,
-                                            borderRadius: BorderRadius.circular(
-                                              2,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20),
-
-                                      // 🔹 Header row: image + text column
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                            child: Image.asset(
-                                              chapters[index]['image']!,
-                                              width: 60,
-                                              height: 60,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 16),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  chapters[index]['title']!,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 6),
-                                                const Text(
-                                                  "WTF with Marc Maron",
-                                                  style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                      const SizedBox(height: 20),
-                                      const Divider(color: Colors.grey),
-                                      const SizedBox(height: 10),
-                                      ListTile(
-                                        leading: InkWell(
-                                          onTap: () {
-                                            showModalBottomSheet(
-                                              context: context,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              isScrollControlled: true,
-                                              builder: (context) {
-                                                return const CustomShareSheet();
-                                              },
-                                            );
-                                          },
-                                          child: const Icon(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context, // 👈 yahin call hota hai
+                                  backgroundColor: Colors.transparent,
+                                  isScrollControlled: true,
+                                  builder: (_) => CustomActionBottomSheet(
+                                    image: chapters[index]['image']!,
+                                    title: chapters[index]['title']!,
+                                    subtitle:
+                                        "The hosts jump straight into the mic with.......",
+                                    tiles: [
+                                      InkWell(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            backgroundColor: Colors.transparent,
+                                            isScrollControlled: true,
+                                            builder: (context) {
+                                              return const CustomShareSheet();
+                                            },
+                                          );
+                                        },
+                                        child: ListTile(
+                                          leading: const Icon(
                                             Icons.share,
                                             color: Colors.white,
                                           ),
-                                        ),
-
-                                        title: InkWell(
-                                          onTap: () {
-                                            showModalBottomSheet(
-                                              context: context,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              isScrollControlled: true,
-                                              builder: (context) {
-                                                return const CustomShareSheet();
-                                              },
-                                            );
-                                          },
-                                          child: Text(
-                                            "Share",
+                                          title: const Text(
+                                            "Share this chapter",
                                             style: TextStyle(
                                               color: Colors.white,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      // 🔹 Play button
                                       ListTile(
                                         leading: const Icon(
                                           Icons.play_arrow,
                                           color: Colors.white,
                                         ),
                                         title: const Text(
-                                          "Play",
+                                          "Play from this chapter",
                                           style: TextStyle(color: Colors.white),
                                         ),
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          print("Play clicked");
-                                        },
                                       ),
-
-                                      // 🔹 Share button
                                     ],
                                   ),
                                 );
                               },
-                            );
-
-                            // showModalBottomSheet(
-                            //   context: context,
-                            //   backgroundColor: const Color(0xff1C2431),
-                            //   shape: const RoundedRectangleBorder(
-                            //     borderRadius: BorderRadius.vertical(
-                            //       top: Radius.circular(24),
-                            //     ),
-                            //   ),
-                            //   builder: (context) {
-                            //     return Padding(
-                            //       padding: const EdgeInsets.all(20),
-                            //       child: Column(
-                            //         mainAxisSize: MainAxisSize.min,
-                            //         crossAxisAlignment:
-                            //             CrossAxisAlignment.start,
-                            //         children: [
-                            //           // 🔹 Top handle
-                            //           Center(
-                            //             child: Container(
-                            //               width: 40,
-                            //               height: 4,
-                            //               decoration: BoxDecoration(
-                            //                 color: Colors.grey,
-                            //                 borderRadius: BorderRadius.circular(
-                            //                   2,
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //           ),
-                            //           const SizedBox(height: 20),
-
-                            //           // 🔹 Header row: image + text column
-                            //           Row(
-                            //             crossAxisAlignment:
-                            //                 CrossAxisAlignment.start,
-                            //             children: [
-                            //               // Image at start
-                            //               ClipRRect(
-                            //                 borderRadius: BorderRadius.circular(
-                            //                   12,
-                            //                 ),
-                            //                 child: Image.asset(
-                            //                   chapters[index]['image']!,
-                            //                   width: 60,
-                            //                   height: 60,
-                            //                   fit: BoxFit.cover,
-                            //                 ),
-                            //               ),
-                            //               const SizedBox(width: 16),
-
-                            //               // Column with 2 texts
-                            //               Expanded(
-                            //                 child: Column(
-                            //                   crossAxisAlignment:
-                            //                       CrossAxisAlignment.start,
-                            //                   children: [
-                            //                     Text(
-                            //                       chapters[index]['title']!,
-                            //                       style: const TextStyle(
-                            //                         color: Colors.white,
-                            //                         fontSize: 18,
-                            //                         fontWeight: FontWeight.bold,
-                            //                       ),
-                            //                     ),
-                            //                     const SizedBox(height: 6),
-                            //                     const Text(
-                            //                       "WTF with Marc Maron",
-                            //                       style: TextStyle(
-                            //                         color: Colors.grey,
-                            //                         fontSize: 14,
-                            //                         fontWeight: FontWeight.w400,
-                            //                       ),
-                            //                     ),
-                            //                   ],
-                            //                 ),
-                            //               ),
-                            //             ],
-                            //           ),
-
-                            //           const SizedBox(height: 20),
-                            //           const Divider(color: Colors.grey),
-
-                            //           const SizedBox(height: 10),
-
-                            //           ListTile(
-                            //             leading: const Icon(
-                            //               Icons.playlist_add,
-                            //               color: Colors.white,
-                            //             ),
-                            //             title: const Text(
-                            //               "Add to Playlist",
-                            //               style: TextStyle(color: Colors.white),
-                            //             ),
-                            //             onTap: () {
-                            //               Navigator.pop(context);
-                            //             },
-                            //           ),
-
-                            //           // // 🔹 Row icons: Share & Play
-                            //           // Row(
-                            //           //   mainAxisAlignment:
-                            //           //       MainAxisAlignment.spaceBetween,
-                            //           //   children: [
-                            //           //     // Share button
-                            //           //     InkWell(
-                            //           //       onTap: () {
-                            //           //         Navigator.pop(context);
-                            //           //         // Share logic
-                            //           //         print("Share clicked");
-                            //           //       },
-                            //           //       child: Row(
-                            //           //         children: const [
-                            //           //           Icon(
-                            //           //             Icons.share,
-                            //           //             color: Colors.white,
-                            //           //           ),
-                            //           //           SizedBox(width: 8),
-                            //           //           Text(
-                            //           //             "Share",
-                            //           //             style: TextStyle(
-                            //           //               color: Colors.white,
-                            //           //             ),
-                            //           //           ),
-                            //           //         ],
-                            //           //       ),
-                            //           //     ),
-                            //           //     ListTile(
-                            //           //       leading: const Icon(
-                            //           //         Icons.play_arrow,
-                            //           //         color: Colors.white,
-                            //           //       ),
-                            //           //       title: const Text(
-                            //           //         "Play",
-                            //           //         style: TextStyle(
-                            //           //           color: Colors.white,
-                            //           //         ),
-                            //           //       ),
-                            //           //       onTap: () {
-                            //           //         Navigator.pop(context);
-                            //           //       },
-                            //           //     ),
-
-                            //           //     // Play button
-                            //           //     // InkWell(
-                            //           //     //   onTap: () {
-                            //           //     //     Navigator.pop(context);
-                            //           //     //     // Play logic
-                            //           //     //     print("Play clicked");
-                            //           //     //   },
-                            //           //     //   child: Row(
-                            //           //     //     children: const [
-                            //           //     //       Icon(
-                            //           //     //         Icons.play_arrow,
-                            //           //     //         color: Colors.white,
-                            //           //     //       ),
-                            //           //     //       SizedBox(width: 8),
-                            //           //     //       Text(
-                            //           //     //         "Play",
-                            //           //     //         style: TextStyle(
-                            //           //     //           color: Colors.white,
-                            //           //     //         ),
-                            //           //     //       ),
-                            //           //     //     ],
-                            //           //     //   ),
-                            //           //     // ),
-                            //           //   ],
-                            //           // ),
-                            //           // const SizedBox(height: 20),
-                            //         ],
-                            //       ),
-                            //     );
-                            //   },
-                            // );
-
-                            /// 🔹 BOTTOM SHEET (LOGIC SEPARATE)
-                            // showModalBottomSheet(
-                            //   context: context,
-                            //   backgroundColor: const Color(0xff1C2431),
-                            //   shape: const RoundedRectangleBorder(
-                            //     borderRadius: BorderRadius.vertical(
-                            //       top: Radius.circular(24),
-                            //     ),
-                            //   ),
-                            //   builder: (context) {
-                            //     return Padding(
-                            //       padding: const EdgeInsets.all(20),
-                            //       child: Column(
-                            //         mainAxisSize: MainAxisSize.min,
-                            //         crossAxisAlignment:
-                            //             CrossAxisAlignment.start,
-                            //         children: [
-                            //           Center(
-                            //             child: Container(
-                            //               width: 40,
-                            //               height: 4,
-                            //               decoration: BoxDecoration(
-                            //                 color: Colors.grey,
-                            //                 // borderRadius: BorderRadius.circular(
-                            //                 //   10,
-                            //                 // ),
-                            //               ),
-                            //             ),
-                            //           ),
-                            //           const SizedBox(height: 20),
-
-                            //           Text(
-                            //             chapters[index]['title']!,
-                            //             style: const TextStyle(
-                            //               color: Colors.white,
-                            //               fontSize: 18,
-                            //               fontWeight: FontWeight.bold,
-                            //             ),
-                            //           ),
-
-                            //           const SizedBox(height: 20),
-
-                            //           ListTile(
-                            //             leading: const Icon(
-                            //               Icons.play_arrow,
-                            //               color: Colors.white,
-                            //             ),
-                            //             title: const Text(
-                            //               "Play",
-                            //               style: TextStyle(color: Colors.white),
-                            //             ),
-                            //             onTap: () {
-                            //               Navigator.pop(context);
-                            //             },
-                            //           ),
-
-                            //           ListTile(
-                            //             leading: const Icon(
-                            //               Icons.playlist_add,
-                            //               color: Colors.white,
-                            //             ),
-                            //             title: const Text(
-                            //               "Add to Playlist",
-                            //               style: TextStyle(color: Colors.white),
-                            //             ),
-                            //             onTap: () {
-                            //               Navigator.pop(context);
-                            //             },
-                            //           ),
-
-                            //           ListTile(
-                            //             leading: const Icon(
-                            //               Icons.share,
-                            //               color: Colors.white,
-                            //             ),
-                            //             title: const Text(
-                            //               "Share",
-                            //               style: TextStyle(color: Colors.white),
-                            //             ),
-                            //             onTap: () {
-                            //               Navigator.pop(context);
-                            //             },
-                            //           ),
-                            //         ],
-                            //       ),
-                            //     );
-                            //   },
-                            // );
-                          },
-                          child: const Icon(
-                            Icons.more_vert,
-                            color: Colors.white,
+                            ),
                           ),
-                        ),
 
-                        // trailing: InkWell(
-                        //   onTap: () {
-                        //     setState(() {
-                        //       selectedEpisodeIndex = index;
-                        //       isPlaying = true;
-                        //     });
-                        //   },
-                        //   child: const Icon(
-                        //     Icons.more_vert,
-                        //     color: Colors.white,
-                        //   ),
-                        // ),
+                          Divider(color: Colors.white30),
+                        ],
                       );
                     },
                   ),
@@ -686,50 +491,60 @@ class _SingleScreenState extends State<SingleScreen> {
           /// ================= MINI PLAYER =================
           if (isPlaying && selectedEpisodeIndex != null)
             Positioned(
-              left: 10,
-              right: 10,
-              bottom: 10,
+              left: 8,
+              right: 8,
+              bottom: 8,
               child: Container(
                 height: 80,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: const Color(0xff1C2431),
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      blurRadius: 10,
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
                     Image.asset(
-                      chapters[selectedEpisodeIndex!]['image']!,
+                      "assets/images/r.png",
                       width: 50,
                       height: 50,
+                      fit: BoxFit.cover,
                     ),
                     const SizedBox(width: 12),
 
+                    /// 🔹 FIXED (NO RED SCREEN)
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
-                            chapters[selectedEpisodeIndex!]['title']!,
-                            style: const TextStyle(color: Colors.white),
+                            'Episode 1: "The Kickoff Chaos"',
+                            style: TextStyle(color: Colors.white),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          const Text(
-                            "WTF with Marc Maron",
-                            style: TextStyle(color: Colors.grey),
+                          Text(
+                            'WTF with Marc Maron',
+                            style: TextStyle(color: Colors.white),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
                     ),
 
-                    /// ❌ CLOSE / PAUSE MINI PLAYER
                     InkWell(
                       onTap: () {
-                        setState(() {
-                          isPlaying = false;
-                          selectedEpisodeIndex = null;
-                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SingleScreen(),
+                          ),
+                        );
                       },
                       child: SvgPicture.asset(
                         "assets/icons/lrp.svg",

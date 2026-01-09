@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tapplay_project/components/build_tag.dart';
 import 'package:tapplay_project/components/container_widget.dart';
+import 'package:tapplay_project/components/custom_follow_bar.dart';
 import 'package:tapplay_project/view/podcast/like_show_screen.dart';
 import 'package:tapplay_project/view/podcast/profile_screen.dart';
 // import 'package:tapplay_project/components/episode_item.dart';
@@ -44,62 +45,12 @@ class _AboutShowScreenState extends State<AboutShowScreen> {
                       ratingText: "5.0 (2.4k).Stories.Celebrities",
                       iconPath: "assets/icons/error.svg",
                     ),
+                    const SizedBox(height: 10),
 
                     // Follow button
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                          ),
-                          child: const Text("Follow"),
-                        ),
-                        const SizedBox(width: 20),
+                    CustomFollowBar(),
+                    SizedBox(height: 10),
 
-                        SvgPicture.asset(
-                          "assets/icons/bell.svg",
-                          width: 24,
-                          height: 24,
-                        ),
-                        const SizedBox(width: 20),
-
-                        Icon(Icons.more_vert, color: Color(0xffB3B3B3)),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Check out latest episode
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2A3352),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Row(
-                        children: const [
-                          Image(image: AssetImage("assets/images/1.png")),
-                          // Icon(Icons.play_circle_fill, size: 40),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              "Check out the latest Episode",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          Icon(Icons.arrow_forward_ios, color: Colors.white),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 9),
-                    // Tags
                     Row(
                       children: [
                         InkWell(
@@ -151,6 +102,7 @@ class _AboutShowScreenState extends State<AboutShowScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 5),
 
                     Text(
                       "About",
@@ -180,6 +132,74 @@ class _AboutShowScreenState extends State<AboutShowScreen> {
                     ),
 
                     SizedBox(height: 20),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: const [
+                          Row(
+                            children: [
+                              Icon(Icons.facebook, color: Colors.white),
+                              // SizedBox(width: 10,),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                child: Text(
+                                  "Facebook ",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    // fontWeight: FontWeight.bold
+                                    // height: 1.6,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Icon(Icons.camera_alt, color: Colors.white),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 1,
+                                ),
+                                child: Text(
+                                  "Instagram ",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    // fontWeight: FontWeight.bold
+                                    // height: 1.6,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Icon(Icons.alternate_email, color: Colors.white),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                child: Text(
+                                  "Twitter",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    // fontWeight: FontWeight.bold
+                                    // height: 1.6,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
 
                     // Row(children: [
 

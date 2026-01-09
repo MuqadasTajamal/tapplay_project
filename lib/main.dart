@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tapplay_project/components/custom_share_sheet.dart';
 import 'package:tapplay_project/view/podcast/about_show_screen.dart';
-import 'package:tapplay_project/view/podcast/artise_profile_screen.dart';
 import 'package:tapplay_project/view/podcast/portcast.dart';
 import 'package:tapplay_project/view/podcast/profile_screen.dart';
+import 'package:tapplay_project/view/podcast/rate_podcast_screen.dart';
+import 'package:tapplay_project/view/podcast/single1_screen.dart';
 import 'package:tapplay_project/view/podcast/single_screen.dart';
 
 void main(List<String> args) {
@@ -19,11 +20,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: "Regular"),
       debugShowCheckedModeBanner: false,
       home:
-          //  Portcast(),
+          // RatePodcastScreen(),
+          // Portcast(),
           //  Scaffold(body: CustomShareSheet()),
           // SingleScreen(),
           ProfileScreen(),
-      // // ArtiseProfileScreen(),
+      // Single1Screen(),
+      // ArtiseProfileScreen(),
       // ArtiseProfile(),
       // AboutShowScreen(),
     );

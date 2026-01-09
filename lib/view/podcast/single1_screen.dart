@@ -32,11 +32,14 @@ class _Single1ScreenState extends State<Single1Screen> {
               children: [
                 // Top Container with image and details
                 Container(
-                  height: s.height * 0.5,
+                  // width: s.width,
+                  height: 300,
+                  // height: s.height * 0.5,
                   decoration: BoxDecoration(
                     image: const DecorationImage(
                       image: AssetImage("assets/images/r.png"),
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
                     ),
                     borderRadius: BorderRadius.circular(40),
                   ),
@@ -47,7 +50,11 @@ class _Single1ScreenState extends State<Single1Screen> {
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.only(
+                                top: 30,
+                                left: 19,
+                                right: 19,
+                              ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.end,
