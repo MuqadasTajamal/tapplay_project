@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tapplay_project/components/custom_share_sheet.dart';
+import 'package:tapplay_project/controller/provider/profile_provider.dart';
+import 'package:tapplay_project/controller/provider/single_provider.dart';
 import 'package:tapplay_project/view/podcast/about_show_screen.dart';
 import 'package:tapplay_project/view/podcast/portcast.dart';
 import 'package:tapplay_project/view/podcast/profile_screen.dart';
@@ -16,19 +19,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(fontFamily: "Regular"),
-      debugShowCheckedModeBanner: false,
-      home:
-          // RatePodcastScreen(),
-          // Portcast(),
-          //  Scaffold(body: CustomShareSheet()),
-          // SingleScreen(),
-          ProfileScreen(),
-      // Single1Screen(),
-      // ArtiseProfileScreen(),
-      // ArtiseProfile(),
-      // AboutShowScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => SingleProvider()),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(fontFamily: "Regular"),
+        debugShowCheckedModeBanner: false,
+        home: SingleScreen(),
+        // ProfileScreen(),
+      ),
     );
   }
 }
